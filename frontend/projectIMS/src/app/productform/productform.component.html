@@ -1,0 +1,60 @@
+<div class="container" *ngIf="isFormVisible">
+    <div class="bg-modal" (click)="closeForm()"></div>
+    
+    <div *ngIf="showPopup" class="popup-msg" [ngClass]="{'error-msg': isError, 'success-msg': !isError}">
+        {{ popupMessage }}
+    </div>
+
+    <div class="formcard" (click)="$event.stopPropagation()">
+        <h2>{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h2>
+
+        <form [formGroup]="productdata" (ngSubmit)="senduser()" class="formelements">
+            <div class="inputlabel">
+                <label for="productCode">Product Code</label>
+                <input id="productCode" type="text" formControlName="productCode" placeholder="TS-001..." [readonly]="isEditMode">
+                <div style="color: red;" *ngIf="productdata.get('productCode')?.invalid && productdata.get('productCode')?.touched">
+                    <small *ngIf="productdata.get('productCode')?.hasError('required')">*Product Code is Required</small>
+                </div>
+            </div>
+
+            <div class="inputlabel">
+                <label for="productName">Product Name</label>
+                <input id="productName" type="text" formControlName="productName" placeholder="Muzan oversized T-shirt">
+                <div style="color: red;" *ngIf="productdata.get('productName')?.invalid && productdata.get('productName')?.touched">
+                    <small *ngIf="productdata.get('productName')?.hasError('required')">*Product Name is Required</small>
+                </div>
+            </div>
+
+            <div class="inputlabel">
+                <label for="category">Category</label>
+                <select id="category" formControlName="category">
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="electronics">Electronics & Gadgets</option>
+                    <option value="fashion">Men's & Women's Fashion</option>
+                    <option value="home">Home, Kitchen & Pets</option>
+                    <option value="beauty">Beauty & Personal Care</option>
+                    <option value="sports">Sports & Outdoors</option>
+                    <option value="toys">Toys, Games & Baby</option>
+                    <option value="books">Books & Stationery</option>
+                    <option value="automotive">Automotive & Tools</option>
+                </select>
+                <div style="color: red;" *ngIf="productdata.get('category')?.invalid && productdata.get('category')?.touched">
+                    <small *ngIf="productdata.get('category')?.hasError('required')">*Category is Required</small>
+                </div>
+            </div>
+
+            <div class="inputlabel">
+                <label for="price">Price</label>
+                <input id="price" type="number" formControlName="price" placeholder="0.00">
+                <div style="color: red;" *ngIf="productdata.get('price')?.invalid && productdata.get('price')?.touched">
+                    <small *ngIf="productdata.get('price')?.hasError('required')">*Price is Required</small>
+                    <small *ngIf="productdata.get('price')?.hasError('min')">*Price must be greater than 0</small>
+                </div>
+            </div>
+
+            <div class="btns">
+                <button [disabled]="productdata.invalid" type="submit" [ngClass]="{'btn-inactive': productdata.invalid}">{{ isEditMode ? 'Update Product' : 'Add Product' }}</button>
+            </div>
+        </form>
+    </div>
+</div>

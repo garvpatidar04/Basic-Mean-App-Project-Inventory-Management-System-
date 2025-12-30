@@ -1,0 +1,18 @@
+const fs = require('fs');
+
+function logReqRes(filename){
+    return (req, res, next) =>{
+        if (req.path==='/favicon.ico') return res.send();
+        fs.appendFile(
+            filename,
+            `${Date.now()} | ${req.ip} ${req.method} ${req.path}\n`,
+            (err)=>{
+                next();
+            }
+        )
+    }
+}
+
+module.exports = {
+    logReqRes,
+}
